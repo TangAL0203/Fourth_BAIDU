@@ -1,0 +1,12 @@
+# model checkpoint file
+Preliminary/models/*.pth
+# ipg file
+Preliminary/hard_sample/*.jpg
+Preliminary/orig_test/*.jpg
+Preliminary/orig_train/*/*.jpg
+Preliminary/test/*/*.jpg
+Preliminary/train/*/*.jpg
+Preliminary/val/*/*.jpg
+# pyc file
+Preliminary/*.pyc
+Preliminary/utils/*.pyc
