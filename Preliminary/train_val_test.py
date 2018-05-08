@@ -3,7 +3,7 @@ from __future__ import print_function
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.optim import lr_scheduler 
+from torch.optim import lr_scheduler
 from torch.autograd import Variable
 from torch.nn import functional as F
 import utils.dataset as dataset

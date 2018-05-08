@@ -2,6 +2,7 @@
 import torch
 import torchvision
 import torch.nn as nn
+import torch.nn.functional as F
 # import pretrainedmodels  # for pytorch v0.4 python 3.5
 
 
@@ -11,6 +12,7 @@ class Modified_densenet201(nn.Module):
         super(Modified_densenet201, self).__init__()
         model = torchvision.models.densenet201(pretrained=True)
         self.num_classs = num_classs
+        self.avgpool_size = 7 # for 224x224 input
         for i, m in enumerate(model.children()):
             if i==0:
                 self.features = m
@@ -18,10 +20,11 @@ class Modified_densenet201(nn.Module):
                 self.classifier = nn.Linear(in_features=1920, out_features=num_classs)
 
     def forward(self, x):
-        x = self.features(x)
-        x = x.view(x.size(0), -1)
-        x = self.classifier(x)
-        return x
+        features = self.features(x)
+        out = F.relu(features, inplace=True)
+        out = F.avg_pool2d(out, kernel_size=self.avgpool_size).view(features.size(0), -1)
+        out = self.classifier(out)
+        return out
 
 class Modified_Resnet50(nn.Module):
     """docstring for ClassName"""
