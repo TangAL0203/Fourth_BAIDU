@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.utils.data as data
+import torchvision
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 from PIL import Image

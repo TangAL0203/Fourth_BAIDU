@@ -135,9 +135,9 @@ def main():
         test_loader = dataset.test_loader(test_path, batch_size=1, num_workers=10, pin_memory=True)
 
         if args.TenCrop:
-            TenCroptest_loader = '...'
+            TenCroptest_loader = dataset.testTenCrop_loader(test_path, batch_size=1, num_workers=10, pin_memory=True)
 
-    train_val_test(model, train_loader, val_loader, test_loader, print_freq=50, TenCroptest_loader=None, optimizer=None, epoches=args.epochs)
+    train_val_test(model, train_loader, val_loader, test_loader, print_freq=50, TenCroptest_loader=TenCroptest_loader, optimizer=None, epoches=args.epochs)
 
 if __name__ == "__main__":
     main()

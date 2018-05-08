@@ -128,9 +128,12 @@ def get_train_val_testTenCrop_acc(model, train_loader, val_loader, test_loader, 
     for i, (batch, label) in enumerate(TenCroptest_loader):
         bs, ncrops, c, h, w = batch.size()
         batch = batch.cuda()
-        result = model(batch.view(-1, c, h, w))
+        result = model(Variable(batch.view(-1, c, h, w))) # (10,100)
         result_avg = result.view(bs, ncrops, -1).mean(1)
         pred_label = result_avg.data.max(1)[1]
+        if i==0:
+            print "pred_label is: ", pred_label.cpu()
+            print "label is: ", label
         TenCroptest_correct += pred_label.cpu().eq(label).sum()
         TenCroptest_total += label.size(0)
 
