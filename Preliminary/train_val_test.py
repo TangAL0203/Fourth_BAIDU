@@ -23,6 +23,7 @@ def get_args():
     parser = argparse.ArgumentParser(description='Fourth Baidu Competition Experiment')
 
     parser.add_argument('--arch', metavar='ARCH', default='Resnet50', help='model architecture')
+    parser.add_argument('--gpuId', default='0', type=str, help='GPU Id')
     parser.add_argument('--lr', '--learning_rate', default=0.001, type=float,
                         metavar='LR', help='initial learning rate')
     parser.add_argument('-b', '--batch_size', default=32, type=int,
@@ -53,6 +54,7 @@ def get_args():
 args = get_args()
 
 print("arch         is: {}".format(args.arch))
+print("gpuId        is: {}".format(args.gpuId))
 print("init lr      is: {}".format(args.lr))
 print("batch size   is: {}".format(args.batch_size))
 print("epochs       is: {}".format(args.epochs))
@@ -63,6 +65,7 @@ print("zeroTrain    is: {}".format(args.zeroTrain))
 print("TenCrop      is: {}".format(args.TenCrop))
 print("weight_decay is: {}".format(args.weight_decay))
 
+os.environ["CUDA_VISIBLE_DEVICES"] = args.gpuId
 
 use_gpu = torch.cuda.is_available()
 num_batches = 0
@@ -72,11 +75,12 @@ def train_val_test(model, train_loader, val_loader, test_loader, print_freq=50, 
     print("Start training.")
     if optimizer is None:
         optimizer = optim.SGD(model.parameters(), lr = args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
-    StepLr = lr_scheduler.StepLR(optimizer, step_size=6, gamma=0.1)
+    StepLr = lr_scheduler.StepLR(optimizer, step_size=15, gamma=0.1)
     max_val_acc = 0
     max_test_acc = 0
     for i in range(epoches):
-        StepLr.step(i)
+        if i<=15:
+            StepLr.step(i)
         model.train()
         print("Epoch: ", i, "lr is: {}".format(StepLr.get_lr()))
         num_batches = train_epoch(model, num_batches, train_loader, print_freq=print_freq, optimizer=optimizer)
@@ -133,7 +137,7 @@ def main():
         if args.TenCrop:
             TenCroptest_loader = '...'
 
-    train_val_test(model, train_loader, val_loader, test_loader, print_freq=50, TenCroptest_loader=None, optimizer=None, epoches=10)
+    train_val_test(model, train_loader, val_loader, test_loader, print_freq=50, TenCroptest_loader=None, optimizer=None, epoches=args.epochs)
 
 if __name__ == "__main__":
     main()

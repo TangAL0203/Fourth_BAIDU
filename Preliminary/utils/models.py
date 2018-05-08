@@ -66,7 +66,7 @@ class Modified_Resnet101(nn.Module):
 class Modified_Resnet152(nn.Module):
     """docstring for ClassName"""
     def __init__(self, num_classs=100):
-        super(Modified_Resnet101, self).__init__()
+        super(Modified_Resnet152, self).__init__()
         model = torchvision.models.resnet152(pretrained=True)
         self.num_classs = num_classs
         temp = []
