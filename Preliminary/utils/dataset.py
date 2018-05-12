@@ -20,8 +20,8 @@ def train_loader(path, batch_size=32, num_workers=4, pin_memory=True, mean=[0.48
     return data.DataLoader(
         datasets.ImageFolder(path,
                             transforms.Compose([
-                                transforms.Resize(256),
-                                transforms.RandomResizedCrop(224),
+                                transforms.Resize(512),
+                                transforms.RandomResizedCrop(448),
                                 transforms.RandomHorizontalFlip(),
                                 transforms.ToTensor(),
                                 normalize,
@@ -36,8 +36,8 @@ def test_loader(path, batch_size=1, num_workers=4, pin_memory=True, mean=[0.485,
     return data.DataLoader(
         datasets.ImageFolder(path,
                             transforms.Compose([
-                                transforms.Resize(256),
-                                transforms.CenterCrop(224),
+                                transforms.Resize(512),
+                                transforms.CenterCrop(448),
                                 transforms.ToTensor(),
                                 normalize,
                                 ])),
@@ -52,8 +52,8 @@ def testTenCrop_loader(path, batch_size=1, num_workers=4, pin_memory=True, mean=
     return data.DataLoader(
         datasets.ImageFolder(path,
                             transforms.Compose([
-                                transforms.Resize(256),
-                                transforms.TenCrop(224),
+                                transforms.Resize(512),
+                                transforms.TenCrop(448),
                                 torchvision.transforms.Lambda(lambda crops: torch.stack([transforms.ToTensor()(crop) for crop in crops])), # returns a 4D tensor
                                 torchvision.transforms.Lambda(lambda crops: torch.stack([normalize(crop) for crop in crops])),
                                 ])),
@@ -141,8 +141,7 @@ def default_loader(path):
 
 # torchvision.datasets.folder部分代码
 
-# 输入单张图片路径，转换成模型要求的数据类型
-# root = '/home/smiles/Distillation/data/train'
+# 输入单张图片路径，转换成模型要求的数据类�?# root = '/home/smiles/Distillation/data/train'
 # path = '/home/smiles/Distillation/data/train/dog/dog.0.jpg'
 def get_single_img(root, path, train=True):
     classes, class_to_idx = find_classes(root)

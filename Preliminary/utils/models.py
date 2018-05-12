@@ -34,8 +34,10 @@ class Modified_Resnet50(nn.Module):
         self.num_classs = num_classs
         temp = []
         for i, m in enumerate(model.children()):
-            if i<=8:
+            if i<=7:
                 temp.append(m)
+            elif i==8:
+                temp.append(torch.nn.modules.AvgPool2d(kernel_size=14, stride=1, padding=0, ceil_mode=False, count_include_pad=True))
             else:
                 self.classifier = nn.Linear(in_features=2048, out_features=num_classs)
         self.features = nn.Sequential(*temp)
@@ -54,8 +56,10 @@ class Modified_Resnet101(nn.Module):
         self.num_classs = num_classs
         temp = []
         for i, m in enumerate(model.children()):
-            if i<=8:
+            if i<=7:
                 temp.append(m)
+            elif i==8:
+                temp.append(torch.nn.modules.AvgPool2d(kernel_size=14, stride=1, padding=0, ceil_mode=False, count_include_pad=True))
             else:
                 self.classifier = nn.Linear(in_features=2048, out_features=num_classs)
         self.features = nn.Sequential(*temp)
@@ -74,8 +78,10 @@ class Modified_Resnet152(nn.Module):
         self.num_classs = num_classs
         temp = []
         for i, m in enumerate(model.children()):
-            if i<=8:
+            if i<=7:
                 temp.append(m)
+            elif i==8:
+                temp.append(torch.nn.modules.AvgPool2d(kernel_size=14, stride=1, padding=0, ceil_mode=False, count_include_pad=True))
             else:
                 self.classifier = nn.Linear(in_features=2048, out_features=num_classs)
         self.features = nn.Sequential(*temp)

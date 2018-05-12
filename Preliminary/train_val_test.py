@@ -75,11 +75,11 @@ def train_val_test(model, train_loader, val_loader, test_loader, print_freq=50, 
     print("Start training.")
     if optimizer is None:
         optimizer = optim.SGD(model.parameters(), lr = args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
-    StepLr = lr_scheduler.StepLR(optimizer, step_size=15, gamma=0.1)
+    StepLr = lr_scheduler.StepLR(optimizer, step_size=25, gamma=0.1)
     max_val_acc = 0
     max_test_acc = 0
     for i in range(epoches):
-        if i<=15:
+        if i<=25:
             StepLr.step(i)
         model.train()
         print("Epoch: ", i, "lr is: {}".format(StepLr.get_lr()))
@@ -136,6 +136,8 @@ def main():
 
         if args.TenCrop:
             TenCroptest_loader = dataset.testTenCrop_loader(test_path, batch_size=1, num_workers=10, pin_memory=True)
+        else:
+            TenCroptest_loader =None
 
     train_val_test(model, train_loader, val_loader, test_loader, print_freq=50, TenCroptest_loader=TenCroptest_loader, optimizer=None, epoches=args.epochs)
 
